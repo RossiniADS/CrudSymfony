@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-3">
+            <input type="text" class="form-control" name="crm" id="crm" placeholder="CRM" value="{{medicos.crm}}">
+        </div>
+        <div class="col-12 mt-3">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Nome" value="{{medicos.nome}}">
+        </div>
+        <div class="col-12 mt-3">
+            <select class="form-select" name="especialidade" id="especialidade">
+            <option>Especialidade...</option>
+            {% for especialidade in especialidades %}
+            <option value="{{especialidade.id}}" {{ medicos.especialidade.id == especialidade.id ? 'selected'}}>{{especialidade.descricao}}</option>
+            {% endfor %}
+            </select>  
+        </div>
+        <div class="col-3 mt-3">
+          <input type="submit" class="btn btn-primary" onclick="editarMedico()">
+        </div>
+    </div>
+</div>
+
+<script>
+function editarMedico()
+{
+    var crm = $("#crm").val()
+    var name = $("#name").val()
+    var especialidade = $("#especialidade :selected").val();
+
+  $.ajax({
+    type : "PUT",
+    url : '/medicos/' + {{medicos.id}},
+    dataType: 'json',
+    data :
+    JSON.stringify({
+        crm: crm,
+        nome: name,
+        especialidadeId: especialidade
+    }),
+    //headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    success : function(data) {
+      console.log(data)
+      alert("Medico cadastrado com sucesso")
+    },
+    error: function(error){
+         console.log(error.responseText);
+    }
+  });
+}
+</script>
+{% endblock %}

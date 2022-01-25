@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-3">
+            <input type="text" class="form-control" name="crm" id="crm" placeholder="CRM">
+        </div>
+        <div class="col-12 mt-3">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Nome">
+        </div>
+        <div class="col-12 mt-3">
+            <select class="form-select" name="especialidade" id="especialidade">
+            <option selected>Especialidade...</option>
+            {% for especialidade in especialidades %}
+            <option value="{{especialidade.id}}">{{especialidade.descricao}}</option>
+            {% endfor %}
+            </select>  
+        </div>
+        <div class="col-3 mt-3">
+          <input type="submit" class="btn btn-primary" onclick="cadastraMedico()">
+        </div>
+    </div>
+</div>
+
+<script>
+function cadastraMedico()
+{
+    var crm = $("#crm").val()
+    var name = $("#name").val()
+    var especialidade = $("#especialidade :selected").val();
+
+  $.ajax({
+    type : "POST",
+    url : '/medicos',
+    dataType: 'json',
+    data :
+    JSON.stringify({
+        crm: crm,
+        nome: name,
+        especialidadeId: especialidade
+    }),
+    //headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    success : function(data) {
+      console.log(data)
+      alert("Medico cadastrado com sucesso")
+    },
+    error: function(error){
+         console.log(error.responseText);
+    }
+  });
+}
+</script>
+{% endblock %}

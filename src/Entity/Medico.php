@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MedicosRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EspecialidadeRepository")
  */
 class Medico implements \JsonSerializable
 {

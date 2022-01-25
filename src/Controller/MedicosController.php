@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Medico;
 use App\Helper\MedicoFactory;
+use App\Repository\MedicosRepository;
+use App\Repository\EspecialidadeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,15 +23,64 @@ class MedicosController extends AbstractController
      * @var MedicoFactory
      */
     private $medicoFactory;
+    /**
+     * @var MedicosRepository
+     */
+    private $medicosRepository;
+    /**
+     * @var EspecialidadeRepository
+     */
+    private $especialidadeRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         MedicoFactory $medicoFactory,
-        MedicosRepository $medicosRepository
+        MedicosRepository $medicosRepository,
+        EspecialidadeRepository $especialidadeRepository,
     ) {
         $this->entityManager = $entityManager;
         $this->medicoFactory = $medicoFactory;
         $this->medicosRepository = $medicosRepository;
+        $this->especialidadeRepository = $especialidadeRepository;
+    }
+
+    /**
+     * @Route("/Medicos")
+     */
+    public function indexMedicosAction()
+    {
+        $medicoList = $this->medicosRepository->findAll();
+        return $this->render('medicos/show.html.twig',[
+            'medicos' => $medicoList,
+        ]);
+    }
+
+    /**
+     * @Route("/Medicos/create")
+     */
+    public function createMedicosAction()
+    {
+        $medicoList = $this->medicosRepository->findAll();
+        $especialidadeList = $this->especialidadeRepository->findAll();
+
+        return $this->render('medicos/create.html.twig',[
+            'medicos' => $medicoList,
+            'especialidades' => $especialidadeList,
+        ]);
+    }
+
+    /**
+     * @Route("/Medicos/edit/{id}")
+     */
+    public function editMedicosAction(int $id)
+    {
+        $medicoList = $this->medicosRepository->find($id);
+        $especialidadeList = $this->especialidadeRepository->findAll();
+
+        return $this->render('medicos/edit.html.twig',[
+            'medicos' => $medicoList,
+            'especialidades' => $especialidadeList,
+        ]);
     }
 
     /**
@@ -39,7 +90,7 @@ class MedicosController extends AbstractController
     {
         $corpoRequisicao = $request->getContent();
         $medico = $this->medicoFactory->criarMedico($corpoRequisicao);
-
+        
         $this->entityManager->persist($medico);
         $this->entityManager->flush();
 
@@ -51,7 +102,7 @@ class MedicosController extends AbstractController
      */
     public function buscarTodos(): Response
     {
-       $medicoList = $this->$medicosRepository->findAll();
+        $medicoList = $this->medicosRepository->findAll();
 
         return new JsonResponse($medicoList);
     }
@@ -82,8 +133,8 @@ class MedicosController extends AbstractController
 
         $medicoExistente
             ->setCrm($medicoEnviado->getCrm())
-            ->setNome($medicoEnviado->getNome());
-
+            ->setNome($medicoEnviado->getNome())
+            ->setEspecialidade($medicoEnviado->getEspecialidade());
         $this->entityManager->flush();
 
         return new JsonResponse($medicoExistente);
@@ -107,17 +158,17 @@ class MedicosController extends AbstractController
      */
     public function buscaMedico(int $id)
     {
-       
-        $medico = $medicosRepository->find($id);
+        $medico = $this->medicosRepository->find($id);
 
         return $medico;
     }
+
     /**
      * @Route("/especialidades/{especialidadeId}/medicos", methods={"GET"})
      */
-    public function buscaPorEspecialidade(int $especialidadeId): Response {
-       
-        $medicos = $medicosRepository->findBy([
+    public function buscaPorEspecialidade(int $especialidadeId): Response
+    {
+        $medicos = $this->medicosRepository->findBy([
             'especialidade' => $especialidadeId
         ]);
 
