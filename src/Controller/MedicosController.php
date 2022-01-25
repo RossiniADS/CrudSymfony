@@ -45,7 +45,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/Medicos")
+     * @Route("/medicos")
      */
     public function indexMedicosAction()
     {
@@ -56,7 +56,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/Medicos/create")
+     * @Route("/medicos/create")
      */
     public function createMedicosAction()
     {
@@ -70,7 +70,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/Medicos/edit/{id}")
+     * @Route("/medicos/edit/{id}")
      */
     public function editMedicosAction(int $id)
     {
@@ -84,7 +84,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/medicos", methods={"POST"})
+     * @Route("/api/medicos", methods={"POST"})
      */
     public function novo(Request $request): Response
     {
@@ -98,7 +98,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/medicos", methods={"GET"})
+     * @Route("/api/medicos", methods={"GET"})
      */
     public function buscarTodos(): Response
     {
@@ -108,7 +108,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/medicos/{id}", methods={"GET"})
+     * @Route("/api/medicos/{id}", methods={"GET"})
      */
     public function buscarUm(int $id): Response
     {
@@ -119,7 +119,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/medicos/{id}", methods={"PUT"})
+     * @Route("/api/medicos/{id}", methods={"PUT"})
      */
     public function atualiza(int $id, Request $request): Response
     {
@@ -141,7 +141,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/medicos/{id}", methods={"DELETE"})
+     * @Route("/api/medicos/{id}", methods={"DELETE"})
      */
     public function remove(int $id): Response
     {
@@ -164,7 +164,7 @@ class MedicosController extends AbstractController
     }
 
     /**
-     * @Route("/especialidades/{especialidadeId}/medicos", methods={"GET"})
+     * @Route("/api/especialidades/{especialidadeId}/medicos", methods={"GET"})
      */
     public function buscaPorEspecialidade(int $especialidadeId): Response
     {

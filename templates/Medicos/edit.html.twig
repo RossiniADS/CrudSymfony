@@ -31,7 +31,7 @@ function editarMedico()
 
   $.ajax({
     type : "PUT",
-    url : '/medicos/' + {{medicos.id}},
+    url : '/api/medicos/' + {{medicos.id}},
     dataType: 'json',
     data :
     JSON.stringify({

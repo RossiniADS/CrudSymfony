@@ -121,7 +121,7 @@ hr {
       <td>{{medico.nome}}</td>
       <td>{{medico.especialidade.descricao}}</td>
       <td>
-        <a href="/Medicos/edit/{{medico.id}}">Editar</a>
+        <a href="/medicos/edit/{{medico.id}}">Editar</a>
         <a href="#" onclick="document.getElementById('id01').style.display='block', passaIdDelete({{medico.id}})">Excluir</a>
       </td>
     </tr>
@@ -167,7 +167,7 @@ function deletarMedico(id)
 
   $.ajax({
     type : "DELETE",
-    url : '/medicos/' + id,
+    url : '/api/medicos/' + id,
     dataType: 'json',
     //headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     success : function(data) {
