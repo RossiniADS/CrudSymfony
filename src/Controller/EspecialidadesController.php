@@ -31,7 +31,42 @@ class EspecialidadesController extends AbstractController
     }
 
     /**
-     * @Route("/especialidades", methods={"POST"})
+     * @Route("/especialidades")
+     */
+    public function indexEspecialidadesAction()
+    {
+        $especialidadesList = $this->repository->findAll();
+        return $this->render('especialidades/show.html.twig',[
+            'especialidades' => $especialidadesList,
+        ]);
+    }
+
+    /**
+     * @Route("/especialidades/create")
+     */
+    public function createEspecialidadeAction()
+    {
+        $especialidadeList = $this->repository->findAll();
+
+        return $this->render('especialidades/create.html.twig',[
+            'especialidades' => $especialidadeList,
+        ]);
+    }
+
+    /**
+     * @Route("/especialidades/edit/{id}")
+     */
+    public function editEspecialidadeAction(int $id)
+    {
+        $especialidadeList = $this->repository->find($id);
+
+        return $this->render('especialidades/edit.html.twig',[
+            'especialidades' => $especialidadeList,
+        ]);
+    }
+
+    /**
+     * @Route("/api/especialidades", methods={"POST"})
      */
     public function nova(Request $request): Response
     {
@@ -48,7 +83,7 @@ class EspecialidadesController extends AbstractController
     }
 
     /**
-     * @Route("/especialidades", methods={"GET"})
+     * @Route("/api/especialidades", methods={"GET"})
      */
     public function buscarTodas(): Response
     {
@@ -58,7 +93,7 @@ class EspecialidadesController extends AbstractController
     }
 
     /**
-     * @Route("/especialidades/{id}", methods={"GET"})
+     * @Route("/api/especialidades/{id}", methods={"GET"})
      */
     public function buscarUma(int $id): Response
     {
@@ -66,7 +101,7 @@ class EspecialidadesController extends AbstractController
     }
 
     /**
-     * @Route("/especialidades/{id}", methods={"PUT"})
+     * @Route("/api/especialidades/{id}", methods={"PUT"})
      */
     public function atualiza(int $id, Request $request): Response
     {
@@ -83,7 +118,7 @@ class EspecialidadesController extends AbstractController
     }
 
     /**
-     * @Route("/especialidades/{id}", methods={"DELETE"})
+     * @Route("/api/especialidades/{id}", methods={"DELETE"})
      */
     public function remove(int $id): Response
     {

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-3">
+            <input type="text" class="form-control" name="descricao" id="descricao" placeholder="Descrição">
+        </div>
+        <div class="col-3 mt-3">
+          <input type="submit" class="btn btn-primary" onclick="cadastraEspecialidade()">
+        </div>
+    </div>
+</div>
+
+<script>
+function cadastraEspecialidade()
+{
+    var descricao = $("#descricao").val()
+
+  $.ajax({
+    type : "POST",
+    url : '/api/especialidades',
+    dataType: 'json',
+    data :
+    JSON.stringify({
+        descricao: descricao
+    }),
+    //headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    success : function(data) {
+      console.log(data)
+      alert("Especialidade cadastrada com sucesso")
+    },
+    error: function(error){
+         console.log(error.responseText);
+    }
+  });
+}
+</script>
+{% endblock %}
